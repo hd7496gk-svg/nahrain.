@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#EAF6FB">
+  <meta name="description" content="محطة النهرين لتوفير وتنقية المياه في منطقة شفتة. خزان مجاني وتوصيل شهري بسعر ثابت ١٠٠٠٠ دينار.">
+  <title>محطة النهرين | توفير وتنقية المياه</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #EAF6FB;
+      --deep-aqua: #0A5C8F;
+      --turquoise: #19B5C9;
+      --cyan-light: #61D4E3;
+      --white: #FFFFFF;
+      --ice: #EAF6FB;
+      --silver: #C8D0DD;
+      --text-main: #0B2A41;
+      --muted: #5C7C91;
+      --success: #10B981;
+      --border: rgba(10, 92, 143, 0.08);
+      --surface: rgba(255, 255, 255, 0.7);
+      --surface-solid: #FFFFFF;
+      --gradient: linear-gradient(135deg, var(--turquoise), var(--deep-aqua));
+      --gradient-soft: linear-gradient(135deg, rgba(25, 181, 201, .15), rgba(10, 92, 143, .08));
+      --shadow: 0 20px 60px rgba(10, 92, 143, 0.08);
+      --shadow-hover: 0 30px 80px rgba(10, 92, 143, 0.14);
+      --radius: 24px;
+      --container: 1160px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    html { scroll-behavior: smooth; scroll-padding-top: 28px; }
+    
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: var(--text-main);
+      background-color: var(--bg);
+      font-family: "Cairo", sans-serif;
+      line-height: 1.8;
+      direction: rtl;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -4;
+      opacity: 0.5;
+      pointer-events: none;
+      background-image: 
+        radial-gradient(circle at 12% 18%, rgba(25, 181, 201, 0.08), transparent 25rem),
+        radial-gradient(circle at 86% 12%, rgba(10, 92, 143, 0.06), transparent 25rem),
+        radial-gradient(circle at 50% 95%, rgba(25, 181, 201, 0.1), transparent 35rem);
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input, select { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+
+    .container {
+      width: min(calc(100% - 32px), var(--container));
+      margin-inline: auto;
+    }
+
+    /* Soft Wave Dividers */
+    .wave-divider {
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 80px;
+      z-index: 2;
+      pointer-events: none;
+      line-height: 0;
+    }
+    .wave-divider svg { width: 100%; height: 100%; display: block; }
+
+    /* Floating Particles */
+    .particles { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+    .particle {
+      position: absolute; bottom: -60px; width: var(--size); height: calc(var(--size) * 1.28);
+      opacity: 0; border-radius: 55% 45% 60% 40%;
+      border: 1px solid rgba(25, 181, 201, 0.25);
+      background: linear-gradient(145deg, rgba(25,181,201,.15), rgba(10,92,143,.05));
+      transform: rotate(45deg);
+      animation: floatDrop var(--duration) linear infinite;
+      animation-delay: var(--delay);
+    }
+    @keyframes floatDrop {
+      0% { transform: translateY(0) rotate(45deg) scale(.82); opacity: 0; }
+      12% { opacity: .5; }
+      85% { opacity: .2; }
+      100% { transform: translateY(-116vh) rotate(82deg) scale(1.16); opacity: 0; }
+    }
+
+    .section { position: relative; padding: 88px 0; }
+    .section-head { max-width: 720px; margin: 0 auto 38px; text-align: center; }
+    
+    .eyebrow { display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; color: var(--deep-aqua); font-size: .86rem; font-weight: 900; letter-spacing: .01em; }
+    .eyebrow::before, .eyebrow::after { content: ""; width: 24px; height: 1px; background: linear-gradient(90deg, transparent, var(--turquoise)); }
+    
+    .section-title { font-size: clamp(1.8rem, 4vw, 2.9rem); line-height: 1.35; font-weight: 900; letter-spacing: -.02em; color: var(--text-main); }
+    .section-copy { max-width: 650px; margin: 12px auto 0; color: var(--muted); font-size: 1rem; }
+    
+    .gradient-text { color: transparent; background: linear-gradient(95deg, var(--deep-aqua) 10%, var(--turquoise) 90%); background-clip: text; -webkit-background-clip: text; }
+
+    /* Glassmorphism */
+    .glass {
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(234, 246, 251, 0.5));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: var(--radius);
+    }
+
+    /* Buttons */
+    .primary-btn, .secondary-btn {
+      min-height: 56px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 13px 26px;
+      border-radius: 16px;
+      cursor: pointer;
+      font-weight: 900;
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease, background .25s ease;
+      border: 0;
+    }
+    .primary-btn {
+      color: var(--white);
+      background: var(--gradient);
+      box-shadow: 0 14px 38px rgba(25, 181, 201, .25), 0 8px 30px rgba(10, 92, 143, .2);
+    }
+    .primary-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 46px rgba(25, 181, 201, .35), 0 10px 35px rgba(10, 92, 143, .25);
+    }
+    .secondary-btn {
+      color: var(--deep-aqua);
+      border: 1px solid rgba(10, 92, 143, 0.2);
+      background: var(--white);
+    }
+    .secondary-btn:hover {
+      transform: translateY(-3px);
+      border-color: var(--turquoise);
+      background: var(--bg);
+    }
+    .btn-icon { width: 21px; height: 21px; flex: none; }
+
+    /* Hero */
+    .hero {
+      min-height: 760px;
+      padding: 28px 0 120px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .hero::before, .hero::after {
+      content: ""; position: absolute; width: 680px; height: 2px; z-index: -1;
+      opacity: .35; filter: blur(.25px);
+      background: linear-gradient(90deg, transparent, var(--turquoise), var(--deep-aqua), transparent);
+      transform: rotate(-17deg);
+    }
+    .hero::before { top: 24%; left: -190px; }
+    .hero::after { right: -210px; bottom: 15%; transform: rotate(15deg); }
+    
+    .hero-inner { width: 100%; text-align: center; }
+    .offer-pill {
+      width: fit-content; max-width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px;
+      margin: 0 auto 32px; padding: 9px 22px; color: var(--deep-aqua);
+      border: 1px solid rgba(25, 181, 201, .4); border-radius: 999px;
+      background: rgba(25, 181, 201, .08);
+      box-shadow: 0 0 30px rgba(25, 181, 201, .15), inset 0 0 18px rgba(255,255,255,.8);
+      font-size: .9rem; font-weight: 900; animation: pillGlow 3.2s ease-in-out infinite;
+    }
+    @keyframes pillGlow { 50% { border-color: rgba(10,92,143,.5); box-shadow: 0 0 38px rgba(10,92,143,.15), inset 0 0 18px rgba(255,255,255,.9); } }
+    
+    .logo-wrap { position: relative; width: 174px; height: 192px; margin: 0 auto 16px; filter: drop-shadow(0 0 20px rgba(25,181,201,.25)); animation: logoFloat 5s ease-in-out infinite; }
+    @keyframes logoFloat { 50% { transform: translateY(-8px); } }
+    
+    .hero-title { margin-bottom: 4px; font-size: clamp(3.05rem, 9vw, 6.35rem); line-height: 1.18; font-weight: 900; letter-spacing: -.055em; }
+    .hero-subtitle { color: var(--deep-aqua); font-size: clamp(1.15rem, 3vw, 1.68rem); font-weight: 800; }
+    .hero-note { margin: 8px auto 26px; color: var(--muted); font-size: 1rem; font-weight: 600; }
+    .hero-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+    .hero-actions .primary-btn, .hero-actions .secondary-btn { min-width: 165px; }
+    
+    .trust-line { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 15px; margin-top: 28px; color: var(--text-main); font-size: .85rem; font-weight: 700; }
+    .trust-line span { display: flex; align-items: center; gap: 6px; }
+    .check-dot { width: 18px; height: 18px; display: inline-grid; place-items: center; color: #fff; border-radius: 50%; background: var(--success); font-size: 11px; font-weight: 900; flex: none; }
+
+    /* Highlights */
+    .highlights { padding-top: 18px; }
+    .cards-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .highlight-card { position: relative; min-height: 210px; padding: 25px 20px; overflow: hidden; text-align: center; transition: transform .3s ease, box-shadow .3s ease; }
+    .highlight-card:hover { transform: translateY(-7px); box-shadow: var(--shadow-hover); }
+    .card-icon, .tank-icon, .offer-icon { display: grid; place-items: center; color: var(--turquoise); border: 1px solid rgba(25,181,201,.2); background: var(--gradient-soft); }
+    .card-icon { width: 58px; height: 58px; margin: 0 auto 14px; border-radius: 17px; }
+    .card-icon svg { width: 29px; height: 29px; }
+    .highlight-card h3 { margin-bottom: 4px; font-size: 1.18rem; font-weight: 900; color: var(--text-main); }
+    .highlight-card p { color: var(--muted); font-size: .91rem; }
+
+    /* Tanks */
+    .tank-sizes { padding-top: 0; }
+    .tank-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .tank-card { position: relative; padding: 42px 30px 30px; text-align: center; overflow: visible; transition: transform .3s ease, box-shadow .3s ease; }
+    .tank-card:hover { transform: translateY(-7px); box-shadow: var(--shadow-hover); }
+    .tank-card.popular { border: 1px solid var(--turquoise); box-shadow: 0 15px 50px rgba(25,181,201,.15); }
+    .popular-badge { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); padding: 6px 18px; color: #fff; font-size: .8rem; font-weight: 900; border-radius: 999px; background: var(--gradient); box-shadow: 0 0 22px rgba(25,181,201,.4); white-space: nowrap; z-index: 3; }
+    .tank-icon { width: 74px; height: 74px; margin: 0 auto 18px; border-radius: 21px; color: var(--deep-aqua); border-color: rgba(10,92,143,.15); background: rgba(10,92,143,.05); }
+    .tank-icon svg { width: 43px; height: 43px; }
+    .tank-card h3 { margin-bottom: 6px; font-size: 1.48rem; font-weight: 900; color: var(--text-main); }
+    .tank-card p { margin-bottom: 24px; color: var(--muted); font-size: .96rem; }
+
+    /* Offer Banner */
+    .offer-banner { position: relative; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 30px; padding: 45px; overflow: hidden; background: var(--gradient); color: var(--white); border: none; border-radius: 30px; box-shadow: 0 25px 70px rgba(10,92,143,.25); }
+    .offer-banner .primary-btn { background: var(--white); color: var(--deep-aqua); box-shadow: 0 10px 30px rgba(0,0,0,.15); }
+    .offer-banner .primary-btn:hover { box-shadow: 0 15px 40px rgba(0,0,0,.2); }
+    .offer-icon { width: 100px; height: 100px; z-index: 1; border-radius: 28px; color: white; border-color: rgba(255,255,255,.3); background: rgba(255,255,255,.1); box-shadow: 0 0 42px rgba(255,255,255,.15); }
+    .offer-icon svg { width: 57px; height: 57px; }
+    .offer-content { position: relative; z-index: 1; }
+    .offer-label { color: rgba(255,255,255,.85); font-size: .86rem; font-weight: 900; }
+    .offer-content h2 { margin: 3px 0 7px; font-size: clamp(1.6rem, 4vw, 2.58rem); line-height: 1.4; font-weight: 900; letter-spacing: -.02em; color: white !important; background: none !important; -webkit-text-fill-color: white !important; }
+    .offer-content p { color: rgba(255,255,255,.95); font-size: 1.05rem; }
+    .offer-content strong { color: #fff; font-weight: 900; }
+
+    /* Steps */
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; position: relative; }
+    .steps::before { content: ""; position: absolute; top: 39px; right: 16.5%; left: 16.5%; height: 2px; z-index: 0; background: linear-gradient(90deg, var(--turquoise), rgba(10,92,143,.1), var(--deep-aqua)); }
+    .step { position: relative; z-index: 1; text-align: center; }
+    .step-number { width: 78px; height: 78px; display: grid; place-items: center; margin: 0 auto 18px; border: 1px solid var(--turquoise); border-radius: 24px; color: var(--deep-aqua); background: #FFFFFF; box-shadow: 0 10px 30px rgba(25,181,201,.15); font-size: 1.5rem; font-weight: 900; }
+    .step h3 { font-size: 1.16rem; font-weight: 900; color: var(--text-main); }
+    .step p { margin-top: 5px; color: var(--muted); font-size: .92rem; }
+
+    /* Form */
+    .form-shell { display: grid; grid-template-columns: .82fr 1.18fr; gap: 0; overflow: hidden; border-radius: 30px; box-shadow: 0 25px 60px rgba(10,92,143,.15); border: none; background: none; backdrop-filter: none; }
+    .form-aside { position: relative; padding: 45px 38px; overflow: hidden; color: white; background: var(--gradient); }
+    .form-aside .eyebrow { color: white; }
+    .form-aside .eyebrow::before, .form-aside .eyebrow::after { background: rgba(255,255,255,.6); }
+    .form-aside h2 { margin: 6px 0 10px; font-size: clamp(1.7rem, 4vw, 2.45rem); line-height: 1.35; font-weight: 900; color: white !important; background: none !important; -webkit-text-fill-color: white !important; }
+    .form-aside p { color: rgba(255,255,255,.9); }
+    .price-box { position: relative; z-index: 1; margin-top: 25px; padding: 19px; border: 1px solid rgba(255,255,255,.25); border-radius: 18px; background: rgba(255,255,255,.15); backdrop-filter: blur(10px); }
+    .price-box small { display: block; color: rgba(255,255,255,.9); }
+    .price-box strong { display: block; font-size: 1.55rem; font-weight: 900; color: white !important; background: none !important; -webkit-text-fill-color: white !important; }
+    .price-box span { color: white; font-size: .92rem; }
+    
+    .form-area { padding: 40px; background: var(--white); }
+    .subscription-form { display: grid; grid-template-columns: 1fr 1fr; gap: 17px; }
+    .field { display: flex; flex-direction: column; gap: 7px; }
+    .field.full { grid-column: 1 / -1; }
+    .field label { color: var(--text-main); font-size: .88rem; font-weight: 800; }
+    .field input, .field select { width: 100%; height: 56px; padding: 0 16px; color: var(--text-main); border: 1px solid var(--border); outline: none; border-radius: 14px; background: #F8FCFE; transition: border-color .2s, box-shadow .2s, background .2s; }
+    .field input::placeholder { color: #94A9B8; }
+    .field input:focus, .field select:focus { border-color: var(--turquoise); background: var(--white); box-shadow: 0 0 0 4px rgba(25,181,201,.1); }
+    .field select option { color: var(--text-main); background: var(--white); }
+    .form-submit { width: 100%; grid-column: 1 / -1; margin-top: 5px; }
+    .form-submit:disabled { cursor: wait; opacity: .78; transform: none; }
+    .form-hint { grid-column: 1 / -1; color: var(--muted); font-size: .79rem; text-align: center; font-weight: 700; }
+    .form-message { display: none; grid-column: 1 / -1; align-items: center; gap: 10px; padding: 14px 16px; color: #065F46; border: 1px solid rgba(16,185,129,.3); border-radius: 14px; background: rgba(16,185,129,.1); font-size: .91rem; font-weight: 800; }
+    .form-message.show { display: flex; animation: messageIn .35s ease both; }
+    @keyframes messageIn { from { opacity: 0; transform: translateY(8px); } }
+    
+    /* Contact */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 22px; }
+    .contact-card, .map-card { padding: 30px; border-radius: 25px; }
+    .contact-card h3, .map-card h3 { margin-bottom: 5px; font-size: 1.36rem; font-weight: 900; color: var(--text-main); }
+    .contact-card p, .map-card p { margin-bottom: 20px; color: var(--muted); font-size: .92rem; }
+    .phone-list { display: grid; gap: 12px; direction: ltr; }
+    .phone-btn { min-height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 12px 17px; border: 1px solid var(--border); border-radius: 16px; background: #F8FCFE; transition: transform .25s, box-shadow .25s, border-color .25s; box-shadow: 0 5px 20px rgba(10,92,143,.03); }
+    .phone-btn:hover { transform: translateX(4px); border-color: var(--turquoise); box-shadow: 0 10px 30px rgba(10,92,143,.08); }
+    .phone-number { color: var(--deep-aqua); font-size: 1.14rem; font-weight: 900; letter-spacing: .06em; }
+    .call-icon { width: 43px; height: 43px; display: grid; place-items: center; flex: none; border-radius: 13px; color: white; background: var(--gradient); }
+    .call-icon svg { width: 21px; }
+    
+    .map-placeholder { position: relative; min-height: 252px; display: grid; place-items: center; overflow: hidden; border: 1px solid var(--border); border-radius: 18px; background: 
+      linear-gradient(28deg, transparent 45%, rgba(25,181,201,.1) 46%, rgba(25,181,201,.1) 48%, transparent 49%), 
+      linear-gradient(-35deg, transparent 38%, rgba(10,92,143,.08) 39%, rgba(10,92,143,.08) 42%, transparent 43%), 
+      repeating-linear-gradient(0deg, rgba(10,92,143,.04) 0 1px, transparent 1px 34px), 
+      repeating-linear-gradient(90deg, rgba(10,92,143,.04) 0 1px, transparent 1px 34px), #FFFFFF; 
+    }
+    .map-placeholder::before { content: ""; position: absolute; inset: 26px; border: 1px dashed rgba(25,181,201,.3); border-radius: 16px; }
+    .location-pin { position: relative; z-index: 2; text-align: center; }
+    .pin { width: 55px; height: 55px; display: grid; place-items: center; margin: 0 auto 11px; color: white; border-radius: 50% 50% 50% 8px; background: var(--gradient); transform: rotate(-45deg); box-shadow: 0 0 35px rgba(25,181,201,.3); }
+    .pin svg { width: 24px; transform: rotate(45deg); }
+    .location-pin strong { display: block; font-size: 1.06rem; color: var(--text-main); }
+    .location-pin small { color: var(--muted); font-weight: 700; }
+
+    /* Footer */
+    footer { background-color: var(--deep-aqua); color: white; padding: 30px 0 100px; text-align: center; border: none; }
+    .footer-brand { font-weight: 900; font-size: 1.1rem; }
+    .footer-brand span { color: rgba(255,255,255,.7); font-weight: 600; font-size: .95rem; }
+    .copyright { margin-top: 10px; color: rgba(255,255,255,.6); font-size: .76rem; }
+
+    /* Floating Actions */
+    .whatsapp { position: fixed; left: 22px; bottom: 22px; width: 60px; height: 60px; display: grid; place-items: center; z-index: 50; color: white; border: 1px solid rgba(255,255,255,.28); border-radius: 20px; background: linear-gradient(145deg, #28D978, #18AD5B); box-shadow: 0 12px 35px rgba(22,190,95,.35); transition: transform .25s; }
+    .whatsapp:hover { transform: translateY(-4px) scale(1.03); }
+    .whatsapp svg { width: 30px; height: 30px; }
+    .whatsapp::after { content: "واتساب"; position: absolute; left: 68px; padding: 5px 10px; color: white; border-radius: 8px; background: var(--deep-aqua); box-shadow: 0 7px 22px rgba(0,0,0,.2); opacity: 0; visibility: hidden; font-size: .75rem; white-space: nowrap; transition: .2s; }
+    .whatsapp:hover::after { opacity: 1; visibility: visible; }
+    
+    .mobile-call-bar { display: none; }
+
+    /* Reveal Animations */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .75s ease, transform .75s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    .delay-1 { transition-delay: .08s; }
+    .delay-2 { transition-delay: .16s; }
+    .delay-3 { transition-delay: .24s; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .section { padding: 70px 0; }
+      .cards-grid { grid-template-columns: repeat(2, 1fr); }
+      .offer-banner { grid-template-columns: auto 1fr; }
+      .offer-banner .primary-btn { grid-column: 1 / -1; width: 100%; }
+      .form-shell { grid-template-columns: 1fr; }
+      .form-aside { padding: 34px; }
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+    
+    @media (max-width: 620px) {
+      body { padding-bottom: 76px; }
+      .container { width: min(calc(100% - 24px), var(--container)); }
+      .section { padding: 58px 0; }
+      .section-head { margin-bottom: 28px; }
+      .eyebrow { font-size: .82rem; }
+      .hero { min-height: 690px; padding: 22px 0 90px; }
+      .offer-pill { margin-bottom: 24px; padding: 8px 14px; font-size: .8rem; }
+      .logo-wrap { width: 135px; height: 150px; }
+      .hero-title { font-size: clamp(2.8rem, 16vw, 4.25rem); }
+      .hero-subtitle { font-size: 1.1rem; }
+      .hero-actions { display: grid; grid-template-columns: 1fr; }
+      .hero-actions .primary-btn, .hero-actions .secondary-btn { width: 100%; }
+      .trust-line { gap: 9px 14px; font-size: .78rem; }
+      .cards-grid { grid-template-columns: 1fr 1fr; gap: 11px; }
+      .highlight-card { min-height: 185px; padding: 20px 11px; border-radius: 18px; }
+      .card-icon { width: 50px; height: 50px; border-radius: 15px; }
+      .card-icon svg { width: 25px; }
+      .highlight-card h3 { font-size: 1rem; }
+      .highlight-card p { font-size: .79rem; }
+      .tank-grid { grid-template-columns: 1fr; gap: 18px; }
+      .tank-card { padding: 36px 20px 25px; }
+      .offer-banner { display: flex; flex-direction: column; align-items: stretch; gap: 18px; padding: 27px 22px; text-align: center; border-radius: 24px; }
+      .offer-icon { width: 78px; height: 78px; margin: auto; border-radius: 22px; }
+      .offer-icon svg { width: 46px; }
+      .steps { grid-template-columns: 1fr; gap: 18px; }
+      .steps::before { top: 40px; bottom: 40px; right: calc(50% - 1px); left: auto; width: 2px; height: auto; }
+      .step { width: 100%; padding: 18px; border: 1px solid var(--border); border-radius: 20px; background: rgba(255,255,255,.8); }
+      .step-number { width: 64px; height: 64px; margin-bottom: 10px; border-radius: 19px; }
+      .form-aside { padding: 28px 22px; }
+      .form-area { padding: 25px 18px; }
+      .subscription-form { grid-template-columns: 1fr; }
+      .field, .field.full, .form-submit, .form-hint, .form-message { grid-column: 1; }
+      .contact-card, .map-card { padding: 23px 17px; }
+      .phone-btn { min-height: 64px; }
+      .phone-number { font-size: 1rem; }
+      .map-placeholder { min-height: 220px; }
+      footer { padding-bottom: 38px; }
+      .whatsapp { left: 13px; bottom: 89px; width: 53px; height: 53px; border-radius: 17px; }
+      .whatsapp::after { display: none; }
+      .mobile-call-bar { position: fixed; right: 0; bottom: 0; left: 0; height: 76px; display: flex; align-items: center; gap: 10px; z-index: 49; padding: 10px 12px max(10px, env(safe-area-inset-bottom)); border-top: 1px solid var(--border); background: rgba(255,255,255,.95); box-shadow: 0 -10px 35px rgba(0,0,0,.05); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+      .mobile-call-bar a { min-height: 50px; display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 14px; font-size: .9rem; font-weight: 900; }
+      .mobile-call-bar .call-now { flex: 1; color: white; background: var(--gradient); }
+      .mobile-call-bar .join-now { width: 43%; color: var(--deep-aqua); border: 1px solid var(--border); background: var(--bg); }
+    }
+    
+    @media (max-width: 370px) {
+      .cards-grid { grid-template-columns: 1fr; }
+      .highlight-card { min-height: 165px; }
+      .hero-title { font-size: 2.7rem; }
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Water Drops -->
+  <div class="particles" aria-hidden="true">
+    <span class="particle" style="left:8%;--size:18px;--duration:15s;--delay:-4s"></span>
+    <span class="particle" style="left:21%;--size:11px;--duration:18s;--delay:-12s"></span>
+    <span class="particle" style="left:37%;--size:22px;--duration:20s;--delay:-6s"></span>
+    <span class="particle" style="left:53%;--size:13px;--duration:16s;--delay:-9s"></span>
+    <span class="particle" style="left:69%;--size:19px;--duration:21s;--delay:-14s"></span>
+    <span class="particle" style="left:83%;--size:10px;--duration:17s;--delay:-2s"></span>
+    <span class="particle" style="left:94%;--size:16px;--duration:19s;--delay:-10s"></span>
+  </div>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero" id="home" style="background-color: #EAF6FB;">
+      <div class="container hero-inner">
+        <div class="offer-pill reveal">✨ عرض حصري — اشترك الآن ✨</div>
+        
+        <div class="logo-wrap reveal delay-1" aria-label="شعار محطة النهرين">
+          <svg viewBox="0 0 180 200" width="100%" height="100%" role="img" aria-label="شعار محطة النهرين">
+            <defs>
+              <linearGradient id="hexGradient" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#19B5C9"/>
+                <stop offset="1" stop-color="#0A5C8F"/>
+              </linearGradient>
+              <linearGradient id="dropGradient" x1="0" y1="0" x2="0.9" y2="1">
+                <stop offset="0" stop-color="#61D4E3"/>
+                <stop offset="0.55" stop-color="#19B5C9"/>
+                <stop offset="1" stop-color="#0A5C8F"/>
+              </linearGradient>
+              <filter id="logoGlow">
+                <feGaussianBlur stdDeviation="4" result="blur"/>
+                <feMerge>
+                  <feMergeNode in="blur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+            <polygon points="90,6 164,48 164,137 90,181 16,137 16,48" fill="rgba(255,255,255,.8)" stroke="url(#hexGradient)" stroke-width="4"/>
+            <polygon points="90,17 154,54 154,131 90,169 26,131 26,54" fill="none" stroke="rgba(10,92,143,.15)" stroke-width="1"/>
+            <path d="M90 42C90 42 53 86 53 116C53 139 69 156 90 156C111 156 127 139 127 116C127 86 90 42 90 42Z" fill="url(#dropGradient)" filter="url(#logoGlow)"/>
+            <path d="M68 118C71 132 79 139 91 140" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="4" stroke-linecap="round"/>
+            <text x="90" y="126" text-anchor="middle" fill="#EAF6FB" font-family="Cairo, sans-serif" font-size="48" font-weight="900">ن</text>
+          </svg>
+        </div>
+        
+        <h1 class="hero-title gradient-text reveal delay-1">محطة النهرين</h1>
+        <p class="hero-subtitle reveal delay-2">لتوفير وتنقية المياه</p>
+        <p class="hero-note reveal delay-2">مياه نقية، خزان مجاني، وتوصيل شهري لحد بابك</p>
+        
+        <div class="hero-actions reveal delay-3">
+          <a href="#subscribe" class="primary-btn"> اشترك الآن
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a href="tel:07774813392" class="secondary-btn">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M8.5 4H5.8C4.8 4 4 4.8 4 5.8 4 13.6 10.4 20 18.2 20c1 0 1.8-.8 1.8-1.8v-2.7l-4-1-1.1 2.2c-2.6-1.1-4.5-3-5.6-5.6L11.5 10l-1-4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            </svg> اتصل بينا
+          </a>
+        </div>
+        
+        <div class="trust-line reveal delay-3">
+          <span><i class="check-dot">✓</i> سعر ثابت</span>
+          <span><i class="check-dot">✓</i> توصيل شهري</span>
+          <span><i class="check-dot">✓</i> خدمة مضمونة</span>
+        </div>
+      </div>
+
+      <div class="wave-divider" style="color: #FFFFFF;">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M0,50 C150,90 350,10 600,40 C850,70 1050,90 1200,50 L1200,120 L0,120 Z" fill="currentColor"></path>
+        </svg>
+      </div>
+    </section>
+
+    <!-- Highlights Section -->
+    <section class="section highlights" style="background-color: #FFFFFF;" aria-label="مميزات الاشتراك">
+      <div class="container">
+        <div class="cards-grid">
+          <article class="highlight-card glass reveal">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 3h10M8 3v4m8-4v4M6 8h12v13H6V8Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 12h6M9 16h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3>خزان مجاناً</h3>
+            <p>عند الاشتراك</p>
+          </article>
+          <article class="highlight-card glass reveal delay-1">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="3" y="6" width="18" height="13" rx="3" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M7 10h7M7 14h4M17 10v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3>١٠٠٠٠ دينار</h3>
+            <p>سعر السعة</p>
+          </article>
+          <article class="highlight-card glass reveal delay-2">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M3 17h2l2-6h10l3 3v3h1v3h-2a3 3 0 0 0-6 0H9a3 3 0 0 0-6 0H2v-2a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+                <circle cx="6" cy="20" r="2" stroke="currentColor" stroke-width="1.7"/>
+                <circle cx="16" cy="20" r="2" stroke="currentColor" stroke-width="1.7"/>
+                <path d="M8 11V7h6v4" stroke="currentColor" stroke-width="1.7"/>
+              </svg>
+            </div>
+            <h3>نجي لعندك</h3>
+            <p>كل شهر</p>
+          </article>
+          <article class="highlight-card glass reveal delay-3">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="m12 3 2.5 5.1 5.6.8-4 3.9.9 5.5-5-2.6-5 2.6.9-5.5-4-3.9 5.6-.8L12 3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>⭐ خدمة مضمونة</h3>
+            <p>وجودة عالية</p>
+          </article>
+        </div>
+      </div>
+      <div class="wave-divider" style="color: #EAF6FB;">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M0,50 C150,90 350,10 600,40 C850,70 1050,90 1200,50 L1200,120 L0,120 Z" fill="currentColor"></path>
+        </svg>
+      </div>
+    </section>
+
+    <!-- Tank Sizes Section -->
+    <section class="section tank-sizes" style="background-color: #EAF6FB;" aria-label="أحجام الخزانات">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">اختار اللي يناسبك</span>
+          <h2 class="section-title">أحجام <span class="gradient-text">الخزانات</span></h2>
+          <p class="section-copy">نوفر خزان مجاني بحجم ٥٠٠ أو ١٠٠٠ لتر، ويا الاشتراك الشهري والتوصيل المنتظم.</p>
+        </div>
+        <div class="tank-grid">
+          <article class="tank-card glass reveal">
+            <div class="tank-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                <ellipse cx="12" cy="5.5" rx="8" ry="2.5" stroke-linecap="round"/>
+                <path d="M4 5.5v13c0 1.38 3.58 2.5 8 2.5s8-1.12 8-2.5v-13" stroke-linecap="round"/>
+                <path d="M4 12c0 1.38 3.58 2.5 8 2.5s8-1.12 8-2.5" stroke-linecap="round"/>
+                <path d="M12 8v13" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3>خزان ٥٠٠ لتر</h3>
+            <p>مناسب للبيوت الصغيرة</p>
+            <a href="#subscribe" class="primary-btn" style="width:100%">اشترك الآن</a>
+          </article>
+          <article class="tank-card glass reveal delay-1 popular">
+            <div class="popular-badge">الأكثر طلباً</div>
+            <div class="tank-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                <ellipse cx="12" cy="5.5" rx="8" ry="2.5" stroke-linecap="round"/>
+                <path d="M4 5.5v13c0 1.38 3.58 2.5 8 2.5s8-1.12 8-2.5v-13" stroke-linecap="round"/>
+                <path d="M4 12c0 1.38 3.58 2.5 8 2.5s8-1.12 8-2.5" stroke-linecap="round"/>
+                <path d="M12 8v13" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3>خزان ١٠٠٠ لتر</h3>
+            <p>مناسب للعائلات الكبيرة والمحلات</p>
+            <a href="#subscribe" class="primary-btn" style="width:100%">اشترك الآن</a>
+          </article>
+        </div>
+      </div>
+      <div class="wave-divider" style="color: #FFFFFF;">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M0,50 C150,90 350,10 600,40 C850,70 1050,90 1200,50 L1200,120 L0,120 Z" fill="currentColor"></path>
+        </svg>
+      </div>
+    </section>
+
+    <!-- Main Offer Banner -->
+    <section class="section" id="offer" style="background-color: #FFFFFF;">
+      <div class="container">
+        <div class="offer-banner reveal">
+          <div class="offer-icon">
+            <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+              <path d="M16 17h32v39H16V17Z" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+              <path d="M20 8h24v9H20V8ZM22 27h20M22 36h20M22 45h20" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M48 32h7v15h-7M9 24h7v15H9V24Z" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="offer-content">
+            <span class="offer-label">عرض الاشتراك الشهري</span>
+            <h2>احصل على <span class="gradient-text">خزان مياه مجاناً</span> الآن (٥٠٠ أو ١٠٠٠ لتر)</h2>
+            <p>اشترك وادفع فقط <strong>١٠٠٠٠ دينار شهرياً</strong> — سعر ثابت لا يتغير</p>
+          </div>
+          <a href="#subscribe" class="primary-btn"> اشترك الآن
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+      <div class="wave-divider" style="color: #EAF6FB;">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M0,50 C150,90 350,10 600,40 C850,70 1050,90 1200,50 L1200,120 L0,120 Z" fill="currentColor"></path>
+        </svg>
+      </div>
+    </section>
+
+    <!-- How it Works -->
+    <section class="section" id="how" style="background-color: #EAF6FB;">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">سهل وسريع</span>
+          <h2 class="section-title">شلون <span class="gradient-text">تشتغل الخدمة؟</span></h2>
+          <p class="section-copy">ثلاث خطوات بسيطة، وإحنا نتكفل بالباقي.</p>
+        </div>
+        <div class="steps">
+          <article class="step reveal">
+            <div class="step-number">١</div>
+            <h3>اشترك</h3>
+            <p>عبّي معلوماتك بالنموذج</p>
+          </article>
+          <article class="step reveal delay-1">
+            <div class="step-number">٢</div>
+            <h3>نستلم طلبك</h3>
+            <p>نتصل بيك ونأكد التفاصيل</p>
+          </article>
+          <article class="step reveal delay-2">
+            <div class="step-number">٣</div>
+            <h3>نوصل لعندك كل شهر</h3>
+            <p>مياه نقية بموعد منتظم</p>
+          </article>
+        </div>
+        <div style="text-align:center; margin-top:34px" class="reveal">
+          <a href="#subscribe" class="primary-btn">ابدأ اشتراكك هسه</a>
+        </div>
+      </div>
+      <div class="wave-divider" style="color: #FFFFFF;">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M0,50 C150,90 350,10 600,40 C850,70 1050,90 1200,50 L1200,120 L0,120 Z" fill="currentColor"></path>
+        </svg>
+      </div>
+    </section>
+
+    <!-- Subscription Form -->
+    <section class="section" id="subscribe" style="background-color: #FFFFFF;">
+      <div class="container">
+        <div class="form-shell glass reveal">
+          <aside class="form-aside">
+            <span class="eyebrow">خزانك علينا</span>
+            <h2>اشترك اليوم وخلي الماي يوصل لبابك</h2>
+            <p>دخل معلوماتك وإحنا نتواصل وياك لتأكيد الاشتراك والموعد المناسب.</p>
+            <div class="price-box">
+              <small>الاشتراك الشهري</small>
+              <strong>١٠٠٠٠ دينار فقط</strong>
+              <span>خزان مجاني • سعر ثابت • توصيل شهري</span>
+            </div>
+          </aside>
+          <div class="form-area">
+            <form class="subscription-form" id="subscriptionForm">
+              <div class="field">
+                <label for="name">الاسم الكامل</label>
+                <input id="name" name="name" type="text" autocomplete="name" placeholder="اكتب اسمك" required>
+              </div>
+              <div class="field">
+                <label for="phone">رقم الهاتف</label>
+                <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="07XX XXX XXXX" required>
+              </div>
+              <div class="field full">
+                <label for="address">العنوان</label>
+                <input id="address" name="address" type="text" autocomplete="street-address" placeholder="المنطقة، المحلة، أقرب نقطة دالة" required>
+              </div>
+              <div class="field full">
+                <label for="tank">حجم الخزان المطلوب</label>
+                <select id="tank" name="tank" required>
+                  <option value="" selected disabled>اختار حجم الخزان</option>
+                  <option value="500">٥٠٠ لتر</option>
+                  <option value="1000">١٠٠٠ لتر</option>
+                </select>
+              </div>
+              <button class="primary-btn form-submit" type="submit"> إرسال الطلب عبر واتساب
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <p class="form-hint">راح يفتح واتساب برسالة جاهزة بمعلوماتك، وما يلزمك بأي دفع إلكتروني.</p>
+              <div class="form-message" id="formMessage" role="status" aria-live="polite">
+                <span class="check-dot">✓</span> تم تجهيز طلبك! اضغط "إرسال" بواتساب حتى يوصلنا، وراح نتصل بيك لتأكيد الاشتراك.
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="wave-divider" style="color: #EAF6FB;">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M0,50 C150,90 350,10 600,40 C850,70 1050,90 1200,50 L1200,120 L0,120 Z" fill="currentColor"></path>
+        </svg>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section" id="contact" style="background-color: #EAF6FB;">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">إحنا بخدمتك</span>
+          <h2 class="section-title">تواصل ويانا <span class="gradient-text">بأي وقت</span></h2>
+          <p class="section-copy">عندك سؤال عن الاشتراك أو حجم الخزان؟ اتصل بينا ونساعدك.</p>
+        </div>
+        <div class="contact-grid">
+          <article class="contact-card glass reveal">
+            <h3>اتصل مباشرة</h3>
+            <p>اضغط على الرقم حتى تتصل بمحطة النهرين.</p>
+            <div class="phone-list">
+              <a href="tel:07774813392" class="phone-btn" aria-label="اتصل على 07774813392">
+                <span class="phone-number">07774813392</span>
+                <span class="call-icon">
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M8.5 4H5.8C4.8 4 4 4.8 4 5.8 4 13.6 10.4 20 18.2 20c1 0 1.8-.8 1.8-1.8v-2.7l-4-1-1.1 2.2c-2.6-1.1-4.5-3-5.6-5.6L11.5 10l-1-4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+              </a>
+              <a href="tel:07774813394" class="phone-btn" aria-label="اتصل على 07774813394">
+                <span class="phone-number">07774813394</span>
+                <span class="call-icon">
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M8.5 4H5.8C4.8 4 4 4.8 4 5.8 4 13.6 10.4 20 18.2 20c1 0 1.8-.8 1.8-1.8v-2.7l-4-1-1.1 2.2c-2.6-1.1-4.5-3-5.6-5.6L11.5 10l-1-4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+              </a>
+            </div>
+            <a href="#subscribe" class="secondary-btn" style="width:100%; margin-top:14px">أرسل طلب اشتراك</a>
+          </article>
+          
+          <article class="map-card glass reveal delay-1">
+            <h3>موقعنا</h3>
+            <p>محطة النهرين لخدمات توفير وتنقية المياه.</p>
+            <div class="map-placeholder" aria-label="خريطة توضيحية لمنطقة شفتة">
+              <div class="location-pin">
+                <div class="pin">
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                    <path d="M12 3a9 9 0 0 1 9 9M12 21a9 9 0 0 1-9-9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <strong>منطقة شفتة</strong>
+                <small>محطة النهرين</small>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="wave-divider" style="color: var(--deep-aqua);">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+          <path d="M0,50 C150,90 350,10 600,40 C850,70 1050,90 1200,50 L1200,120 L0,120 Z" fill="currentColor"></path>
+        </svg>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-brand">محطة النهرين <span>• NAHRAIN WATER STATION</span></div>
+      <p class="copyright">جميع الحقوق محفوظة © <span id="year"></span></p>
+    </div>
+  </footer>
+
+  <a class="whatsapp" href="https://wa.me/9647774813392?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A3%D8%B4%D8%AA%D8%B1%D9%83%20%D8%A8%D8%AE%D8%AF%D9%85%D8%A9%20%D9%85%D8%AD%D8%B7%D8%A9%20%D8%A7%D9%84%D9%86%D9%87%D8%B1%D9%8A%D9%86" target="_blank" rel="noopener" aria-label="تواصل عبر واتساب">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12.04 2a9.84 9.84 0 0 0-8.48 14.83L2 22l5.3-1.5A9.9 9.9 0 1 0 12.04 2Zm0 17.98a8.03 8.03 0 0 1-4.1-1.12l-.3-.18-3.14.89.91-3.05-.2-.31a8.06 8.06 0 1 1 6.83 3.77Zm4.42-6.02c-.24-.12-1.43-.7-1.65-.79-.22-.08-.38-.12-.54.12-.16.24-.62.79-.76.95-.14.16-.28.18-.52.06-.24-.12-1.02-.37-1.94-1.2a7.25 7.25 0 0 1-1.34-1.67c-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.19-.47-.39-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2 0 1.18.86 2.32.98 2.48.12.16 1.69 2.58 4.1 3.62.57.25 1.02.4 1.37.51.58.18 1.1.16 1.51.1.46-.07 1.43-.59 1.63-1.15.2-.57.2-1.05.14-1.15-.06-.1-.22-.16-.46-.28Z"/>
+    </svg>
+  </a>
+
+  <div class="mobile-call-bar" aria-label="إجراءات سريعة">
+    <a class="call-now" href="tel:07774813392">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M8.5 4H5.8C4.8 4 4 4.8 4 5.8 4 13.6 10.4 20 18.2 20c1 0 1.8-.8 1.8-1.8v-2.7l-4-1-1.1 2.2c-2.6-1.1-4.5-3-5.6-5.6L11.5 10l-1-4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+      </svg> اتصل الآن
+    </a>
+    <a class="join-now" href="#subscribe">اشترك هسه</a>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+    
+    const form = document.getElementById("subscriptionForm");
+    const formMessage = document.getElementById("formMessage");
+    const phoneInput = document.getElementById("phone");
+    
+    phoneInput.addEventListener("input", function () {
+      this.value = this.value.replace(/[^\d٠-٩+ ]/g, "").slice(0, 16);
+    });
+    
+    const WA_NUMBER = "9647774813392";
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const name = form.elements["name"].value.trim();
+      const phone = form.elements["phone"].value.trim();
+      const address = form.elements["address"].value.trim();
+      const tankSelect = form.elements["tank"];
+      const tank = tankSelect.options[tankSelect.selectedIndex].text;
+
+      const message =
+        "مرحباً، أريد الاشتراك بخدمة محطة النهرين\n\n" +
+        "الاسم: " + name + "\n" +
+        "رقم الهاتف: " + phone + "\n" +
+        "العنوان: " + address + "\n" +
+        "حجم الخزان: " + tank + "\n" +
+        "الاشتراك: ١٠٠٠٠ دينار شهرياً مع خزان مجاني";
+
+      const url = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(message);
+
+      const opened = window.open(url, "_blank", "noopener");
+      if (!opened) { window.location.href = url; }
+
+      form.reset();
+      formMessage.classList.add("show");
+      formMessage.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      setTimeout(function () {
+        formMessage.classList.remove("show");
+      }, 9000);
+    });
+
+    const revealElements = document.querySelectorAll(".reveal");
+    if ("IntersectionObserver" in window) {
+      const revealObserver = new IntersectionObserver(function (entries, observer) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: "0px 0px -35px 0px" });
+      revealElements.forEach(function (element) {
+        revealObserver.observe(element);
+      });
+    } else {
+      revealElements.forEach(function (element) {
+        element.classList.add("visible");
+      });
+    }
+  </script>
+</body>
+</html>
